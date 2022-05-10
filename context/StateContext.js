@@ -46,23 +46,31 @@ export const StateContext = ({ children }) => {
     setCartItems(newCartItems);
   }
 
-  const toggleCartItemQuanitity = (id, value) => {
-    foundProduct = cartItems.find((item) => item._id === id)
-    index = cartItems.findIndex((product) => product._id === id);
-    const newCartItems = cartItems.filter((item) => item._id !== id)
+const toggleCartItemQuantity = (searchedId, value) => {
+    foundProduct = cartItems.find((item) => item._id === searchedId);
+    index = cartItems.findIndex((product) => product._id === searchedId);
+    const newCartItems = cartItems.filter((item) => item._id !== searchedId);
 
-    if(value === 'inc') {
-      setCartItems([...newCartItems, { ...foundProduct, quantity: foundProduct.quantity + 1 } ]);
-      setTotalPrice((prevTotalPrice) => prevTotalPrice + foundProduct.price)
-      setTotalQuantities(prevTotalQuantities => prevTotalQuantities + 1)
-    } else if(value === 'dec') {
+    if (value === "inc") {
+      newCartItems.splice(index, 0, {
+        ...foundProduct,
+        quantity: foundProduct.quantity + 1,
+      });
+      setCartItems([...newCartItems]);
+      setTotalPrice((prevTotalPrice) => prevTotalPrice + foundProduct.price);
+      setTotalQuantities((prevTotalQuantities) => prevTotalQuantities + 1);
+    } else if (value === "dec") {
       if (foundProduct.quantity > 1) {
-        setCartItems([...newCartItems, { ...foundProduct, quantity: foundProduct.quantity - 1 } ]);
-        setTotalPrice((prevTotalPrice) => prevTotalPrice - foundProduct.price)
-        setTotalQuantities(prevTotalQuantities => prevTotalQuantities - 1)
+        newCartItems.splice(index, 0, {
+          ...foundProduct,
+          quantity: foundProduct.quantity - 1,
+        });
+        setCartItems([...newCartItems]);
+        setTotalPrice((prevTotalPrice) => prevTotalPrice - foundProduct.price);
+        setTotalQuantities((prevTotalQuantities) => prevTotalQuantities - 1);
       }
     }
-  }
+  };
 
   const incQty = () => {
     setQty((prevQty) => prevQty + 1);
